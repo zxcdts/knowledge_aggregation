@@ -1,0 +1,123 @@
+{
+	"info": {
+		"_postman_id": "56080dd5-48d5-44cc-9066-d134f98e1e98",
+		"name": "data drive collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "诚信联盟商家",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"function get_price_flag(){",
+							"    var flag = 0",
+							"    var jsonData = pm.response.json();",
+							"    dealerlist = jsonData['result']['list']",
+							"    for(var i=0; i<dealerlist.length; i++){",
+							"        //console.log(i)",
+							"        carlist = dealerlist[i]['cars']",
+							"        for(var j = 0;j<carlist.length;j++){",
+							"            //console.log(carlist[j]['price'])",
+							"            var price = carlist[j]['price']",
+							"            if(price>50 || price<10){",
+							"                flag = 1",
+							"            }",
+							"        }",
+							"    }",
+							"    return flag;",
+							"}",
+							"",
+							"function get_carname_flag(){",
+							"    var flag = 0",
+							"    var jsonData = pm.response.json();",
+							"    dealerlist = jsonData['result']['list']",
+							"    for(var i=0; i<dealerlist.length; i++){",
+							"        //console.log(i)",
+							"        carlist = dealerlist[i]['cars']",
+							"        for(var j = 0;j<carlist.length;j++){",
+							"            //console.log(carlist[j]['price'])",
+							"            var carname = carlist[j]['carname']",
+							"            if(!carname){",
+							"                flag = 1",
+							"            }",
+							"        }",
+							"    }",
+							"    return flag;",
+							"}",
+							"",
+							"pm.test(\"判断价格在【10，50】万之间\", function () {",
+							"    var result = get_price_flag();",
+							"    pm.expect(result).to.eql(0);",
+							"});",
+							"",
+							"pm.test(\"判断车源名称是否为空\", function () {",
+							"    var result = get_carname_flag();",
+							"    pm.expect(result).to.eql(0);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"//对所有参数排序",
+							"算签方法为公司机密"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://apirnappsh.che168.com/api/v1/getintegritydealers?_appid=main2sc.android&_sign=C86B90B9B812C8ABED71E8EA63E54D87&cid={{cid}}&iscondition=0&v={{$timestamp}}",
+					"protocol": "http",
+					"host": [
+						"apirnappsh",
+						"che168",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"getintegritydealers"
+					],
+					"query": [
+						{
+							"key": "_appid",
+							"value": "main2sc.android"
+						},
+						{
+							"key": "_sign",
+							"value": "C86B90B9B812C8ABED71E8EA63E54D87"
+						},
+						{
+							"key": "cid",
+							"value": "{{cid}}"
+						},
+						{
+							"key": "iscondition",
+							"value": "0"
+						},
+						{
+							"key": "pid",
+							"value": "420000",
+							"disabled": true
+						},
+						{
+							"key": "v",
+							"value": "{{$timestamp}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
